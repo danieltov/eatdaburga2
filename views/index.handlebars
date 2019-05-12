@@ -1,0 +1,62 @@
+<div class="row m-0">
+    <div class="col p-3 m-0 bg-primary">
+        <h2 class="display display-3 text-center">Burgas 2B Devoured</h2>
+        <hr class="text-center w-50">
+        <div class="card-columns m-3">
+            {{#each burgers }}
+            {{#unless devoured}}
+            <!-- Not Devoured Burgers Here -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title">{{burger_name}}</div>
+                    <div class="card-text text-center">
+                        <img src=" assets/img/burger.png">
+                        <button class=" btn btn-lg bg-info btn-devour text-white" data-id={{id}}>Devour!</button>
+                    </div>
+                </div>
+            </div>
+            {{/unless}}
+            {{/each}}
+        </div>
+    </div>
+    <div class="col p-3 m-0 bg-danger">
+        <h2 class="display display-3 text-center">Burga Hall o Fame</h2>
+        <hr class="text-center w-50">
+        <div class="card-columns m-3">
+            {{#each burgers }}
+            {{#if devoured}}
+            <!-- Devoured Burgers Here -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title">{{burger_name}}</div>
+                    <div class="card-text text-center">
+                        <img src=" assets/img/burger.png">
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+            {{/each}}
+        </div>
+    </div>
+</div>
+
+<div class="row m-0">
+    <div class="col m-0 p-3 bg-warning d-flex flex-column justify-content-center align-items-center">
+        <h2 class="display display-4 text-center">Add a Burga</h2>
+        <hr class="text-center w-25">
+        <form class="add-burger">
+            <input type="text" id="bn" name="name" placeholder="Enter burger's name..." class="form-control mt-3 p-3" />
+            <hr class="w-25 text-center" />
+            <input type="radio" name="devoured" value="1" />
+            Devoured!<br />
+            <input type="radio" name="devoured" value="0" checked />
+            Undevoured
+
+            <hr class="w-25 text-center" />
+
+            <button type="submit" class="btn btn-lg btn-block bg-primary text-white btn-add">
+                Add Burger
+            </button>
+        </form>
+    </div>
+</div>
