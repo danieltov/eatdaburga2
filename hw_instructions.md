@@ -1,183 +1,85 @@
-# Node Express Handlebars
+# Burger 2: The Sequel
 
 ### Overview
 
-In this assignment, you'll create a burger logger with MySQL, Node, Express, Handlebars and a homemade ORM (yum!). Be sure to follow the MVC design pattern; use Node and MySQL to query and route data in your app, and Handlebars to generate your HTML.
+This homework assignment is **optional**.
 
-### Read This
+In this assignment, you're going to Sequelize the `Burger` app you made last unit. We've split this exercise into three different tiers, all with different tasks and expectations. Finish whichever tier will provide you with the most reasonable challenge.
 
-When trying to connect remotely to your Heroku database on an open network such as a coffee shop, library, or even your University WiFi, it will be blocked. If you are experiencing a Heroku connection error, this could be why.
+### Before you Begin
 
-### Important
+1. Create a new folder called `sequelizedBurger`
+2. Copy the contents of your completed assignment from last unit.
+    - Remove the older git connection with `rm -R .git`.
+    - Then connect this folder with a new github repo.
+3. Run `sequelize init` to create the necessary files.
 
--   **This assignment must be deployed.** Be sure to utilize the [MYSQL Heroku Deployment Guide](../../Supplemental/MySQLHerokuDeploymentProcess.pdf) in order to deploy your assignment.
+4. **Note**: If for any reason you don't have a finished assignment for last unit, no problem. Message the instructor, who will provide you will a skeleton file to work of for this unit.
 
-### Before You Begin
+### Commits
 
--   Eat-Da-Burger! is a restaurant app that lets users input the names of burgers they'd like to eat.
+Having an active and healthy commit history on GitHub is important for your future job search. It is also extremely important for making sure your work is saved in your repository. If something breaks, committing often ensures you are able to go back to a working version of your code.
 
--   Whenever a user submits a burger's name, your app will display the burger on the left side of the page -- waiting to be devoured.
+-   Committing often is a signal to employers that you are actively working on your code and learning.
 
--   Each burger in the waiting area also has a `Devour it!` button. When the user clicks it, the burger will move to the right side of the page.
+    -   We use the mantra “commit early and often.” This means that when you write code that works, add it and commit it!
 
--   Your app will store every burger in a database, whether devoured or not.
+    -   Numerous commits allow you to see how your app is progressing and give you a point to revert to if anything goes wrong.
 
--   [Check out this video of the app for a run-through of how it works](https://youtu.be/msvdn95x9OM).
+-   Be clear and descriptive in your commit messaging.
+
+    -   When writing a commit message, avoid vague messages like "fixed." Be descriptive so that you and anyone else looking at your repository knows what happened with each commit.
+
+-   We would like you to have well over 200 commits by graduation, so commit early and often!
 
 ### Submission on BCS
 
--   **This assignment must be deployed.** \* Please submit both the deployed Heroku link to your homework AND the link to the Github Repository!
+-   **This assignment must be deployed.** Please submit both the deployed Heroku link to your homework AND the link to the Github Repository! See [Sequelize Heroku Deployment](../../03-Supplemental/SequelizeDBDeploy.md)
 
 ## Instructions
 
-#### App Setup
+Put in your best efforts to complete one of the three available challenge tiers. Remember to deploy your assignment to Heroku once complete.
 
-1. Create a GitHub repo called `burger` and clone it to your computer.
+#### Tier 1: Sequelized! (Basic to Moderate)
 
-2. Make a package.json file by running `npm init` from the command line.
+-   Remove all references to your vanilla MySQL queries and replace them with Sequelize queries.
 
-3. Install the Express npm package: `npm install express`.
+-   That means:
 
-4. Create a server.js file.
+    -   Replacing your MySQL `Burger` model with a Sequelized equivalent.
 
-5. Install the Handlebars npm package: `npm install express-handlebars`.
+        -   Don't forget to edit the model and initial migration file to make the burger's devoured field carry a default value of false -- otherwise you might encounter bugs.
+            -   There's no option to include that default in the command line, so you'll need to open up your editor to make this change.
+        -   Don't forget to sync the models!
 
-6. Install MySQL npm package: `npm install mysql`.
+        -   Edit your new `config.json` file to include your database configurations. Place your JawsDB details in the `production` property of your json file; the details of your local database go in the `developer` property.
 
-7. Require the following npm packages inside of the server.js file:
-    - express
+        -   Remove your old ORM file, as well as any references to it in `burgers_controller.js`. Replace those references with Sequelize's ORM methods.
 
-#### DB Setup
+-   When you finish, your site should function just like your last one:
+    ![1-Sequelized](Images/1-Sequelized.jpg)
 
-1. Inside your `burger` directory, create a folder named `db`.
+#### Tier 2: Customer Associations (Challenge)
 
-2. In the `db` folder, create a file named `schema.sql`. Write SQL queries this file that do the following:
+-   Add in a Customer association to the project. This will involve creating at least one new Customer model and connecting it with your Burger model.
 
-    - Create the `burgers_db`.
-    - Switch to or use the `burgers_db`.
-    - Create a `burgers` table with these fields:
-        - **id**: an auto incrementing int that serves as the primary key.
-        - **burger_name**: a string.
-        - **devoured**: a boolean.
+-   What kind of association you would like to use is up to you. Does a Customer have one Burger? Many Burgers?
 
-3. Still in the `db` folder, create a `seeds.sql` file. In this file, write insert queries to populate the `burgers` table with at least three entries.
+-   For example, you could make a site that logs the name of which Customer ate which Burger, where each Customer only gets one Burger. If you can't think of another type of association, try this one!
 
-4. Run the `schema.sql` and `seeds.sql` files into the mysql server from the command line
+    ![3-Associated](Images/3-Associated.jpg)
 
-5. Now you're going to run these SQL files.
+-   If you do go select this tier, you must edit the handlebars files and CSS stylesheets to implement some sort of additional feature to the site. We don't want you to just connect two models and submit your project. Make your site do something relevant to this association.
 
-    - Make sure you're in the `db` folder of your app.
+#### Bonus! (Challenge)
 
-    - Start MySQL command line tool and login: `mysql -u root -p`.
+-   Add validations to your models where:
 
-    - With the `mysql>` command line tool running, enter the command `source schema.sql`. This will run your schema file and all of the queries in it -- in other words, you'll be creating your database.
+    -   A burger's name cannot be null
+    -   A burger's devoured status is false by default
+    -   A Customer's name cannot be null
 
-    - Now insert the entries you defined in `seeds.sql` by running the file: `source seeds.sql`.
-
-    - Close out of the MySQL command line tool: `exit`.
-
-#### Config Setup
-
-1. Inside your `burger` directory, create a folder named `config`.
-
-2. Create a `connection.js` file inside `config` directory.
-
-    - Inside the `connection.js` file, setup the code to connect Node to MySQL.
-
-    - Export the connection.
-
-3. Create an `orm.js` file inside `config` directory.
-
-    - Import (require) `connection.js` into `orm.js`
-
-    - In the `orm.js` file, create the methods that will execute the necessary MySQL commands in the controllers. These are the methods you will need to use in order to retrieve and store data in your database.
-
-        - `selectAll()`
-        - `insertOne()`
-        - `updateOne()`
-
-    - Export the ORM object in `module.exports`.
-
-#### Model setup
-
--   Inside your `burger` directory, create a folder named `models`.
-
-    -   In `models`, make a `burger.js` file.
-
-        -   Inside `burger.js`, import `orm.js` into `burger.js`
-
-        -   Also inside `burger.js`, create the code that will call the ORM functions using burger specific input for the ORM.
-
-        -   Export at the end of the `burger.js` file.
-
-#### Controller setup
-
-1. Inside your `burger` directory, create a folder named `controllers`.
-
-2. In `controllers`, create the `burgers_controller.js` file.
-
-3. Inside the `burgers_controller.js` file, import the following:
-
-    - Express
-    - `burger.js`
-
-4. Create the `router` for the app, and export the `router` at the end of your file.
-
-#### View setup
-
-1. Inside your `burger` directory, create a folder named `views`.
-
-    - Create the `index.handlebars` file inside `views` directory.
-
-    - Create the `layouts` directory inside `views` directory.
-
-        - Create the `main.handlebars` file inside `layouts` directory.
-
-        - Setup the `main.handlebars` file so it's able to be used by Handlebars.
-
-        - Setup the `index.handlebars` to have the template that Handlebars can render onto.
-
-        - Create a button in `index.handlebars` that will submit the user input into the database.
-
-#### Directory structure
-
-All the recommended files and directories from the steps above should look like the following structure:
-
-```
-.
-├── config
-│   ├── connection.js
-│   └── orm.js
-│ 
-├── controllers
-│   └── burgers_controller.js
-│
-├── db
-│   ├── schema.sql
-│   └── seeds.sql
-│
-├── models
-│   └── burger.js
-│ 
-├── node_modules
-│ 
-├── package.json
-│
-├── public
-│   └── assets
-│       ├── css
-│       │   └── burger_style.css
-│       └── img
-│           └── burger.png
-│  
-│
-├── server.js
-│
-└── views
-    ├── index.handlebars
-    └── layouts
-        └── main.handlebars
-```
+-   Order the Burgers you send back to the user in alphabetical order using the Sequelize "order" option.
 
 ### Reminder: Submission on BCS
 
@@ -217,12 +119,6 @@ After completing the homework please add the piece to your portfolio. Make sure 
 
 ### One More Thing
 
-This is a really tough homework assignment, but we want you to put in your best effort to finish it.
-
 If you have any questions about this project or the material we have covered, please post them in the community channels in slack so that your fellow developers can help you! If you're still having trouble, you can come to office hours for assistance from your instructor and TAs.
-
-### Reminder
-
-When trying to connect remotely to your Heroku database on an open network such as a coffee shop, library, or even your University WiFi, it will be blocked. If you are experiencing a Heroku connection error, this could be why.
 
 **Good Luck!**
