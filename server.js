@@ -2,7 +2,6 @@
 // * ========================================
 const express = require('express');
 const exphbs = require('express-handlebars');
-const routes = require('./controllers/burgers_controller');
 const db = require('./models');
 
 // * The Configurations
@@ -26,7 +25,7 @@ app.set('view engine', 'handlebars');
 
 // * Set The Routes
 // * ========================================
-app.use(routes);
+require('./controllers/burgers_controller')(app);
 
 // * Syncing our sequelize models and then starting our Express app
 // * =============================================================

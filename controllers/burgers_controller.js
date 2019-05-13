@@ -1,72 +1,48 @@
 // * The Requires
 // * ========================================
+// ! Require our models
+const db = require('../models');
 
-const express = require('express');
-
-// ! Import the model to use its database specific methods
-const burger = require('../models/burger');
-
-// * The Routes & Logic
+// * The Routes
 // * ========================================
-const log = console.log;
-const router = express.Router();
+module.exports = function(app) {
+    const log = console.log;
 
-// ! The 'all' route
-router.get('/', function(req, res) {
-    // ! Invoke the .all() method with a callback that captures the data
-    burger.all(function(data) {
-        // ! Bind the data into an object for the view (handlebars) to use
-        let hbObj = { burgers: data };
+    // ! GET route for fetching all burgers
+    app.get('/', function(req, res) {
+        // ! Use findAll method then capture all the instances of Burger in the promise
+        // ! Pass each burger through res.json() to be available for the view
+        db.Burger.findall({}).then(burger => {
+            // ! Bind the data into an object for the view (handlebars) to use
+            let hbObj = { burgers: burger };
 
-        // ! Log thƒe new object
-        log(hbObj);
+            // ! Log the new object
+            log(hbObj);
 
-        // ! Use the view to render the data
-        res.render('index', hbObj);
+            // ! Use the view to render the data
+            res.render('index', hbObj);
+        });
     });
-});
 
-// ! The 'add' route
-router.post('/api/burgers', function(req, res) {
-    // ! Pass an array with the column names (strings)
-    // ! Pass an array with the request-body values (taken from the form on the html page)
-    // ! Capture the result in a callback
-    burger.add(
-        ['burger_name', 'devoured'],
-        [req.body.name, req.body.devoured],
-        function(result) {
-            res.json({ id: result.insertID });
-        }
-    );
-});
-
-// ! The 'update' route
-router.put('/api/burgers/:id', function(req, res) {
-    // ! Declare the condition (:id)
-    let condition = 'id = ' + req.params.id;
-
-    //! Log the condition
-    log('(Condition) WHERE ' + condition);
-
-    // ! Declare object with the column-values
-    let devouredData = req.body;
-    // ! Log the devoured Data
-    log('Devoured : ' + devouredData);
-
-    // ! Invoke .update() method and pass through new variables
-    // ! Capture result in the callback
-    burger.update(devouredData, condition, function(result) {
-        if (result.changedRows == 0) {
-            // ! If no rows were changed, then the ID must not exist, so return 404
-            return res.status(404).end();
-        } else {
-            // ! If >0 rows changed, it worked! Return 200 and end.
-            res.status(200).end();
-        }
+    // ! POST route for adding a new burger
+    app.post('/api/burgers', function(req, res) {
+        db.Burger.create({
+            burger_name: req.body.name,
+            devoured: req.body.devoured
+        }).then(burger => res.json(burger));
     });
-});
 
-// * The Export
-// * ========================================
-
-module.exports = router;
+    // ! PUT Route for updating a burger's 'devoured' status.
+    app.put('/api/burgers', function(req, res) {
+        db.Burger.update(
+            {
+                devoured: req.body.devoured
+            },
+            {
+                where: {
+                    id: req.body.id
+                }
+            }
+        ).then(burger => res.json(burger));
+    });
+};
