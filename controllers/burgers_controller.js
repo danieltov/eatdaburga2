@@ -12,7 +12,7 @@ module.exports = function(app) {
     app.get('/', function(req, res) {
         // ! Use findAll method then capture all the instances of Burger in the promise
         // ! Pass each burger through res.json() to be available for the view
-        db.Burger.findall({}).then(burger => {
+        db.Burger.findAll({}).then(burger => {
             // ! Bind the data into an object for the view (handlebars) to use
             let hbObj = { burgers: burger };
 

@@ -1,7 +1,7 @@
 // ! Export the model
 module.exports = function(sequelize, DataTypes) {
     // ! Define the new Burger model (a blueprint for my db table)
-    let Burger = sequelize.define('Burger', {
+    const Burger = sequelize.define('Burger', {
         // ! Define a column called 'burger_name
         burger_name: {
             // ! It'a type is string
