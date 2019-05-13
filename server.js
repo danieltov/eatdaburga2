@@ -3,6 +3,7 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const routes = require('./controllers/burgers_controller');
+const db = require('./models');
 
 // * The Configurations
 // * ========================================
@@ -26,10 +27,3 @@ app.set('view engine', 'handlebars');
 // * Set The Routes
 // * ========================================
 app.use(routes);
-
-// * Start the Server
-// * ========================================
-app.listen(PORT, function() {
-    // ! Log (server-side) when our server has started
-    console.log('Server listening on: http://localhost:' + PORT);
-});
