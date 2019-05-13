@@ -33,14 +33,14 @@ module.exports = function(app) {
     });
 
     // ! PUT Route for updating a burger's 'devoured' status.
-    app.put('/api/burgers', function(req, res) {
+    app.put('/api/burgers/:id', function(req, res) {
         db.Burger.update(
             {
                 devoured: req.body.devoured
             },
             {
                 where: {
-                    id: req.body.id
+                    id: req.params.id
                 }
             }
         ).then(burger => res.json(burger));
